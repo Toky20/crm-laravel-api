@@ -56,6 +56,8 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('/upload/{external_id}', 'DocumentsController@upload')->name('document.upload');
         Route::patch('/updateassign/{external_id}', 'ClientsController@updateAssign');
         Route::post('/updateassign/{external_id}', 'ClientsController@updateAssign');
+
+        Route::get('/export/{external_id}', 'ClientsController@exportClient')->name('client.export');
     });
     Route::resource('clients', 'ClientsController');
     Route::get('document/{external_id}', 'DocumentsController@view')->name('document.view');
@@ -217,6 +219,8 @@ Route::group(['middleware' => ['auth']], function () {
         Route::delete('/{appointment}', 'AppointmentsController@destroy')->name('appointments.destroy');
     });
 
+    
+
     /**
      * Absence
      */
@@ -227,6 +231,28 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('/', 'AbsenceController@store')->name('absence.store');
         Route::delete('/{absence}', 'AbsenceController@destroy')->name('absence.destroy');
     });
+
+    /**
+     * Vendredi
+     */
+
+    /**
+     * Reinitialisation de base
+     */
+    Route::group(['prefix' => 'resetdata'], function () {
+        Route::get('/', 'ResetDataController@index')->name('resetdata.index');
+        Route::get('/reset', 'ResetDataController@reset')->name('resetdata.reset'); 
+    });
+
+    /**
+     * Import
+     */
+
+    Route::get('/import', 'ImportController@showForm' )->name('import.form');
+    Route::post('/import', 'ImportController@processImport')->name('import.process');
+
+    
+    
 });
 
 Route::group(['middleware' => ['auth']], function () {
